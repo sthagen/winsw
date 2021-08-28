@@ -122,7 +122,9 @@ namespace WinSW
         /// </exception>
         public async Task PerformAsync()
         {
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
             var request = WebRequest.Create(this.From);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
             if (!string.IsNullOrEmpty(this.Proxy))
             {
                 var proxyInformation = new CustomProxyInformation(this.Proxy!);
@@ -191,10 +193,14 @@ namespace WinSW
                 if (supportsIfModifiedSince && ((HttpWebResponse?)e.Response)?.StatusCode == HttpStatusCode.NotModified)
                 {
                     Logger.Info($"Skipped downloading unmodified resource '{this.From}'");
+                    return;
                 }
-                else
+
+                string errorMessage = $"Failed to download {this.From} to {this.To}";
+                Logger.Error(errorMessage, e);
+                if (this.FailOnError)
                 {
-                    throw;
+                    throw new IOException(errorMessage, e);
                 }
             }
         }
