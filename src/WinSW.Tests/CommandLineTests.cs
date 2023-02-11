@@ -27,7 +27,7 @@ namespace WinSW.Tests
                 Assert.Equal(ServiceControllerStatus.Stopped, controller.Status);
                 Assert.Equal(ServiceType.Win32OwnProcess, controller.ServiceType);
 
-#if NETFRAMEWORK
+#if NET
                 InterProcessCodeCoverageSession session = null;
                 try
                 {
@@ -77,7 +77,7 @@ namespace WinSW.Tests
 
             var result = Helper.ErrorTest(new[] { commandName });
 
-            Assert.Equal($"Unrecognized command or argument '{commandName}'\r\n\r\n", result.Error);
+            Assert.Equal($"Unrecognized command or argument '{commandName}'.\r\n\r\n", result.Error);
         }
 
         /// <summary>
